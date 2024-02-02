@@ -45,7 +45,7 @@ def Create_columns_discover(Discover_df, drawn_cards):
 
             st.write(f"{selected_card1}")
             st.write(f"残り枚数:{remaining_cards1}")
-            st.write(f"発見1回あたり:{(remaining_cards1/(total_cards - owned_cards1))*3:.2%}")
+            st.write(f"発見1回あたり:{(remaining_cards1/total_cards)*3:.2%}")
             st.write(f"発見回数:{st.session_state.discover_count1}")
             st.write(f"引けた回数:{st.session_state.discovered_count1}")
             st.write(f"前回引けてからの発見回数:{st.session_state.discover_last_count1}")
@@ -63,7 +63,7 @@ def Create_columns_discover(Discover_df, drawn_cards):
 
                 st.write(f"{selected_card2}")
                 st.write(f"残り枚数:{remaining_cards2}")
-                st.write(f"発見1回あたり:{(remaining_cards2/(total_cards - owned_cards2))*3:.2%}")
+                st.write(f"発見1回あたり:{(remaining_cards2/total_cards)*3:.2%}")
                 st.write(f"発見回数:{st.session_state.discover_count2}")
                 st.write(f"引けた回数:{st.session_state.discovered_count2}")
                 st.write(f"前回引けてからの発見回数:{st.session_state.discover_last_count2}")
@@ -81,12 +81,13 @@ def Create_columns_discover(Discover_df, drawn_cards):
 
                 st.write(f"{selected_card3}")
                 st.write(f"残り枚数:{remaining_cards3}")
-                st.write(f"発見1回あたり:{(remaining_cards3/(total_cards - owned_cards1))*3:.2%}")
+                st.write(f"発見1回あたり:{(remaining_cards3/total_cards)*3:.2%}")
                 st.write(f"発見回数:{st.session_state.discover_count3}")
                 st.write(f"引けた回数:{st.session_state.discovered_count3}")
                 st.write(f"前回引けてからの発見回数:{st.session_state.discover_last_count3}")
                 st.write(f"引けるまでの最大発見回数:{st.session_state.discover_max_count3}")
-    st.write(f"----発見対象全体の枚数:{total_cards}----")
+    st.markdown("---")
+    st.write(f"***発見対象全体の枚数:{total_cards}***")
     st.write(Discover_df)
     st.write(f"注記")
     st.write(f"発見1回あたりの確率計算においては、1枠で選ばれる確率を「欲しいカードの残り枚数/発見対象総数」として計算し、3枠分なのでそこに3を掛けて計算している")
@@ -116,8 +117,28 @@ def Create_df_from_grade(selected_grade:int):
     combined_df = combined_df[~combined_df.index.duplicated(keep='first')] #重複を削除
     always_df = filtered_df[filtered_df['type1'].isin(always_types)] #酒場グレードで絞り込んだものから中立・全てを抽出
     combined_df = pd.concat([combined_df, always_df]) #結合
+    #酒場からの除外分を計算。
+    selected_card1 = selected_card1_info.split(' - ')[-1]
+    if selected_card1 in combined_df['name'].values:
+        selected_card1_row = combined_df[combined_df['name'] == selected_card1]
+        remaining_cards1 = selected_card1_row['num'].values[0] - owned_cards1
+        combined_df.loc[selected_card1_row.index, 'num'] = remaining_cards1
+    if not selected_card2_info == None:
+        selected_card2 = selected_card2_info.split(' - ')[-1]
+        if selected_card2 in combined_df['name'].values:
+            selected_card2_row = combined_df[combined_df['name'] == selected_card2]
+            remaining_cards2 = selected_card2_row['num'].values[0] - owned_cards2
+            combined_df.loc[selected_card2_row.index, 'num'] = remaining_cards2
+    if not selected_card3_info == None:
+        selected_card3 = selected_card3_info.split(' - ')[-1]
+        if selected_card3 in combined_df['name'].values:
+            selected_card3_row = combined_df[combined_df['name'] == selected_card3]
+            remaining_cards3 = selected_card3_row['num'].values[0] - owned_cards3
+            combined_df.loc[selected_card3_row.index, 'num'] = remaining_cards3
+    combined_df['num'][combined_df['num'] < 0] = 0 #マイナスがあったら0に戻す
+    #最下段に表示される際に見やすいようにソート
     combined_df = combined_df.sort_values(by='type1')
-    combined_df = combined_df.sort_values(by='grade', ascending=False, kind='mergesort') #最下段に表示される際に見やすいようにソート
+    combined_df = combined_df.sort_values(by='grade', ascending=False, kind='mergesort')
     return combined_df
 
 
@@ -144,10 +165,10 @@ def Create_columns_reroll(combined_df, drawn_cards):
 
         st.write(f"{selected_card1}")
         st.write(f"残り枚数:{remaining_cards1} ")
-        st.write(f"1リロールあたり:{1-(1-remaining_cards1/(total_cards - owned_cards1))**tavern_num:.2%}")
+        st.write(f"1リロールあたり:{1-(1-remaining_cards1/total_cards)**tavern_num:.2%}")
         st.write(f"リロール数:{st.session_state.draw_count1}")
         st.write(f"引けた回数:{st.session_state.drawn_count1}")
-        st.write(f"前回からのリロール数:{st.session_state.draw_last_count1}")
+        st.write(f"引いてからのリロール数:{st.session_state.draw_last_count1}")
         st.write(f"引くまでの最大リロール数:{st.session_state.draw_max_count1}")
     with col2: 
         if 'selected_card2' in globals():#選択されているか否か(=変数が定義されているか否か)
@@ -161,10 +182,10 @@ def Create_columns_reroll(combined_df, drawn_cards):
 
             st.write(f"{selected_card2}")
             st.write(f"残り枚数:{remaining_cards2} ")
-            st.write(f"1リロールあたり:{1-(1-remaining_cards2/(total_cards - owned_cards2))**tavern_num:.2%}")
+            st.write(f"1リロールあたり:{1-(1-remaining_cards2/total_cards)**tavern_num:.2%}")
             st.write(f"リロール数:{st.session_state.draw_count2}")
             st.write(f"引けた回数:{st.session_state.drawn_count2}")
-            st.write(f"前回からのリロール数:{st.session_state.draw_last_count2}")
+            st.write(f"引いてからのリロール数:{st.session_state.draw_last_count2}")
             st.write(f"引くまでの最大リロール数:{st.session_state.draw_max_count2}")
     with col3:
         if 'selected_card3' in globals():#選択されているか否か(=変数が定義されているか否か)
@@ -177,15 +198,18 @@ def Create_columns_reroll(combined_df, drawn_cards):
                 st.session_state.draw_last_count3 = 0                        
 
             st.write(f"{selected_card3}")
-            st.write(f"残り枚数:{remaining_cards3} ")
-            st.write(f"1リロールあたり:{1-(1-remaining_cards3/(total_cards - owned_cards3))**tavern_num:.2%}")
+            st.write(f"残り枚数:{remaining_cards3}")
+            st.write(f"1リロールあたり:{1-(1-remaining_cards3/total_cards)**tavern_num:.2%}")
             st.write(f"リロール数:{st.session_state.draw_count3}")
             st.write(f"引けた回数:{st.session_state.drawn_count3}")
-            st.write(f"前回からのリロール数:{st.session_state.draw_last_count3}")
+            st.write(f"引いてからのリロール数:{st.session_state.draw_last_count3}")
             st.write(f"引くまでの最大リロール数:{st.session_state.draw_max_count3}")
-    st.write(f"----全体の残り枚数:{total_cards}----")
+    st.markdown("---")
+    st.markdown(f"***全体の残り枚数:{total_cards}***")
     st.write(combined_df)
 
+
+####各種定義終了####
 
 
 col1, col2 = st.columns(2)
@@ -201,16 +225,17 @@ selected_types = st.multiselect('BAN', types_options, default=types_options[:5])
 always_types = ['中立', '全て'] #BANとは無関係に常にいるタイプ
 #選択に基づいて基準となるdfを作成
 combined_df = Create_df_from_selected()
+
 #リストに表示する用に一時的なデータ'combined_info'を作成
 combined_df['combined_info'] = combined_df.apply(lambda row: f"{row['grade']} - {row['type1']} - {row['name']}", axis=1)
 # 引きたいカードを選択する
 col1, col2 = st.columns(2)
 selected_card1_info = col1.selectbox('引きたいカード1', combined_df['combined_info'].unique())
-owned_cards1 = col2.slider('引きたいカード1、酒場から消えている数', min_value=0, max_value=15, value=2)
+owned_cards1 = col2.slider('引きたいカード1、酒場から除外する数', min_value=0, max_value=16, value=2)
 selected_card2_info = col1.selectbox('引きたいカード2',combined_df['combined_info'].unique(), index=None)
-owned_cards2 = col2.slider('引きたいカード2、酒場から消えている数', min_value=0, max_value=15, value=0)
+owned_cards2 = col2.slider('引きたいカード2、酒場から除外する数', min_value=0, max_value=16, value=0)
 selected_card3_info = col1.selectbox('引きたいカード3', combined_df['combined_info'].unique(), index=None)
-owned_cards3 = col2.slider('引きたいカード3、酒場から消えている数', min_value=0, max_value=15, value=0)
+owned_cards3 = col2.slider('引きたいカード3、酒場から除外する数', min_value=0, max_value=16, value=0)
 #選択に基づいて最終的に基準となるdf、変数等を作成
 selected_card1 = selected_card1_info.split(' - ')[-1]
 selected_card1_row = combined_df[combined_df['name'] == selected_card1]
@@ -224,9 +249,10 @@ if not selected_card2_info == None:
 if not selected_card3_info == None:
     selected_card3 = selected_card3_info.split(' - ')[-1]
     selected_card3_row = combined_df[combined_df['name'] == selected_card3]
-    remaining_cards3 = selected_card1_row['num'].values[0] - owned_cards3
+    remaining_cards3 = selected_card3_row['num'].values[0] - owned_cards3
     combined_df.loc[selected_card3_row.index, 'num'] = remaining_cards3
-
+    
+combined_df['num'][combined_df['num'] < 0] = 0 #マイナスがあったら0に戻す
 combined_df.drop('combined_info', axis=1, inplace=True)
 total_cards = combined_df['num'].sum() - banished_cards #全体のカードについての残り枚数
 combined_df['draw_probs'] = combined_df['num'] / total_cards #重みづけを作成
