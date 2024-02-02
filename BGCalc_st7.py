@@ -95,6 +95,7 @@ def Create_columns_discover(Discover_df, drawn_cards):
 
 
 def Create_df_from_selected():
+    #選択に基づいたデータフレーム「combined_df」の作成
     filtered_df = df[df['grade'] <= tavern_grade] #酒場グレードで絞り込み
     selected_df1 = filtered_df[filtered_df['type1'].isin(selected_types)] #酒場グレードで絞り込んだdfからtype1で抽出
     selected_df2 = filtered_df[filtered_df['type2'].isin(selected_types)] #酒場グレードで絞り込んだdfからtype2を抽出
@@ -106,9 +107,8 @@ def Create_df_from_selected():
     combined_df = combined_df.sort_values(by='grade', ascending=False, kind='mergesort') #最下段に表示される際に見やすいようにソート
     return combined_df
 
-
+#特定グレードの発見用
 def Create_df_from_grade(selected_grade:int):
-    #選択に基づいたデータフレーム「combined_df」の作成
     filtered_df = df[df['grade'] == selected_grade] #酒場グレードで絞り込み
     selected_df1 = filtered_df[filtered_df['type1'].isin(selected_types)] #酒場グレードで絞り込んだdfからtype1で抽出
     selected_df2 = filtered_df[filtered_df['type2'].isin(selected_types)] #酒場グレードで絞り込んだdfからtype2を抽出
@@ -193,7 +193,7 @@ col1, col2 = st.columns(2)
 tavern_grade_mapping = {1: 3, 2: 4, 3: 4, 4: 5, 5: 5, 6: 6} 
 tavern_grade = col1.slider('酒場のグレード', min_value=1, max_value=6, value=5)
 tavern_num = tavern_grade_mapping.get(tavern_grade, 0)
-#酒場から消えている数を選択
+#酒場から除外する数を選択
 banished_cards = col2.slider('酒場全体から除外する数(リロールにのみ影響)', min_value=0, max_value=150, value=80)
 # BANの選択
 types_options = ['アンデッド', 'エレメンタル', 'キルボア', 'ドラゴン', 'ナーガ', 'マーロック', 'メカ', '悪魔', '海賊', '獣']
