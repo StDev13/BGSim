@@ -24,8 +24,8 @@ def draw_and_show_image_discover(Discover_df):
     total_cards = Discover_df['num'].sum()
     Discover_df['draw_probs'] = Discover_df['num'] / total_cards
     drawn_cards = Discover_df.sample(n=3, replace=False, weights=Discover_df['draw_probs'])
-    row_images = drawn_cards['url'].tolist() #ウェブ上の画像を使う場合
-    #row_images = [f"img/{name}.png" for name in drawn_cards['name']] #ローカルの画像を使う場合
+    #row_images = drawn_cards['url'].tolist() #ウェブ上の画像を使う場合
+    row_images = [f"img/{name}.png" for name in drawn_cards['name']] #ローカルの画像を使う場合
     st.image(row_images, width=150)
     return drawn_cards
 
@@ -124,8 +124,8 @@ def Create_df_from_grade(selected_grade:int):
 def draw_and_show_image_reroll(combined_df):
     # ランダムにカードを引く。正確には1枚引いて残り枚数を再計算を繰り返す必要があるが、計算コスト削減のために一気にtavern_num枚引く
     drawn_cards = combined_df.sample(n=tavern_num, replace=True, weights=combined_df['draw_probs']) 
-    row_images = drawn_cards['url'].tolist() #ウェブ上の画像を使う場合
-    #row_images = [f"img/{name}.png" for name in drawn_cards['name']] #ローカルの画像を使う場合
+    #row_images = drawn_cards['url'].tolist() #ウェブ上の画像を使う場合
+    row_images = [f"img/{name}.png" for name in drawn_cards['name']] #ローカルの画像を使う場合
     st.image(row_images, width=115)
     return drawn_cards
 
