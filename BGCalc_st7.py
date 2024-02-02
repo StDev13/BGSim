@@ -6,7 +6,7 @@ df = pd.read_csv('data_jis.csv', encoding='shift-jis')
 # Streamlitアプリのタイトル
 st.title('金ブランシミュレータ(簡易計算)')
 
-#各種session_stateを初期化。streamlitの制約上、こういう初期化方法じゃないとダメらしい
+#各種session_stateを初期化。streamlitの制約上、こういう初期化方法が必要
 default_session_state_values = {
     'draw_count1': 0, 'drawn_count1': 0, 'draw_last_count1': 0, 'draw_max_count1': 0,
     'discover_count1': 0, 'discovered_count1': 0, 'discover_last_count1': 0, 'discover_max_count1': 0,
@@ -103,7 +103,7 @@ def Create_df_from_selected():
     always_df = filtered_df[filtered_df['type1'].isin(always_types)] #酒場グレードで絞り込んだものから中立・全てを抽出
     combined_df = pd.concat([combined_df, always_df]) #結合
     combined_df = combined_df.sort_values(by='type1')
-    combined_df = combined_df.sort_values(by='grade', kind='mergesort') #最下段に表示される際に見やすいようにソート
+    combined_df = combined_df.sort_values(by='grade', ascending=False, kind='mergesort') #最下段に表示される際に見やすいようにソート
     return combined_df
 
 
@@ -117,7 +117,7 @@ def Create_df_from_grade(selected_grade:int):
     always_df = filtered_df[filtered_df['type1'].isin(always_types)] #酒場グレードで絞り込んだものから中立・全てを抽出
     combined_df = pd.concat([combined_df, always_df]) #結合
     combined_df = combined_df.sort_values(by='type1')
-    combined_df = combined_df.sort_values(by='grade', kind='mergesort') #最下段に表示される際に見やすいようにソート
+    combined_df = combined_df.sort_values(by='grade', ascending=False, kind='mergesort') #最下段に表示される際に見やすいようにソート
     return combined_df
 
 
