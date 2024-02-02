@@ -4,7 +4,7 @@ import pandas as pd
 # CSVファイルの読み込み
 df = pd.read_csv('data_jis.csv', encoding='shift-jis')
 # Streamlitアプリのタイトル
-st.title('金ブランシミュレータ(簡易計算)')
+st.title('BGリロールシミュレータ')
 
 #各種session_stateを初期化。streamlitの制約上、こういう初期化方法が必要
 default_session_state_values = {
