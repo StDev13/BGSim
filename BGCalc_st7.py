@@ -194,7 +194,7 @@ tavern_grade_mapping = {1: 3, 2: 4, 3: 4, 4: 5, 5: 5, 6: 6}
 tavern_grade = col1.slider('酒場のグレード', min_value=1, max_value=6, value=5)
 tavern_num = tavern_grade_mapping.get(tavern_grade, 0)
 #酒場から消えている数を選択
-banished_cards = col2.slider('酒場から消えている総数(リロールにのみ影響)', min_value=0, max_value=150, value=80)
+banished_cards = col2.slider('酒場全体から除外する数(リロールにのみ影響)', min_value=0, max_value=150, value=80)
 # BANの選択
 types_options = ['アンデッド', 'エレメンタル', 'キルボア', 'ドラゴン', 'ナーガ', 'マーロック', 'メカ', '悪魔', '海賊', '獣']
 selected_types = st.multiselect('BAN', types_options, default=types_options[:5])
