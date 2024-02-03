@@ -3,6 +3,8 @@ import pandas as pd
 
 # CSVファイルの読み込み
 df = pd.read_csv('data_jis.csv', encoding='shift-jis')
+df = df[df['exist'] == 1]
+
 # Streamlitアプリのタイトル
 st.title('BGリロールシミュレータ')
 
