@@ -6,7 +6,7 @@ https://bgrerollsim.streamlit.app/
 requirements.txtからstreamlitとpandasをインストールして   
 コマンドラインから  
 ~~~実行コマンド
-streamllit run BGCalc_st7.py
+streamllit run BGSim.py
 ~~~
 を実行するだけ  
   
