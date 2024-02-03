@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 # CSVファイルの読み込み
-@st.cache
+@st.cache_data
 def read_csv():
     df = pd.read_csv('data_jis.csv', encoding='shift-jis')
     df = df[df['exist'] == 1]
@@ -95,10 +95,9 @@ def Create_columns_discover(Discover_df, drawn_cards):
     st.markdown("---")
     st.write(f"***発見対象全体の枚数:{total_cards}***")
     st.write(Discover_df)
-    st.write(f"注記")
-    st.write(f"発見1回あたりの確率計算においては、1枠で選ばれる確率を「欲しいカードの残り枚数/発見対象総数」として計算し、3枠分なのでそこに3を掛けて計算している")
+    st.write(f"※")
+    st.write(f"発見1回あたりの確率計算においては、1枠で選ばれる確率を「欲しいカードの残り枚数/発見対象総数」として計算し、3枠分なので3を掛けて計算している")
     st.write(f"正確には、1-(1-(欲しいカードの残り枚数/発見対象総数))*(1-(欲しいカードの残り枚数/(発見対象総数-1枠目で選ばれるカードの残り枚数の期待値))*(1-(欲しいカードの残り枚数/(発見対象総数-1枠目で選ばれるカードの残り枚数の期待値-2枠目で選ばれるカードの残り枚数の期待値))))")
-    st.write(f"となるはずだけど、めんどくさかったので割愛")
 
 
 def Create_df_from_selected():
@@ -141,7 +140,7 @@ def Create_df_from_grade(selected_grade:int):
             selected_card3_row = combined_df[combined_df['name'] == selected_card3]
             remaining_cards3 = selected_card3_row['num'].values[0] - owned_cards3
             combined_df.loc[selected_card3_row.index, 'num'] = remaining_cards3
-    combined_df['num'][combined_df['num'] < 0] = 0 #マイナスがあったら0に戻す
+    combined_df.loc[combined_df['num'] < 0, 'num'] = 0 #マイナスがあったら0に戻す
     #最下段に表示される際に見やすいようにソート
     combined_df = combined_df.sort_values(by='type1')
     combined_df = combined_df.sort_values(by='grade', ascending=False, kind='mergesort')
@@ -257,7 +256,7 @@ if not selected_card3_info == None:
     remaining_cards3 = selected_card3_row['num'].values[0] - owned_cards3
     combined_df.loc[selected_card3_row.index, 'num'] = remaining_cards3
     
-combined_df['num'][combined_df['num'] < 0] = 0 #マイナスがあったら0に戻す
+combined_df.loc[combined_df['num'] < 0, 'num'] = 0 #マイナスがあったら0に戻す
 combined_df.drop('combined_info', axis=1, inplace=True)
 total_cards = combined_df['num'].sum() - banished_cards #全体のカードについての残り枚数
 combined_df['draw_probs'] = combined_df['num'] / total_cards #重みづけを作成
