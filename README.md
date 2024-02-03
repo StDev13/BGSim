@@ -11,7 +11,7 @@ streamllit run BGSim.py
 を実行するだけ  
   
 data_jis.csvを編集すれば新しい環境でも対応可能  
-ローカルで使う場合はcsv欄の'name'.pngという名前の画像を  
+新しいカードを追加する場合はcsvの'name'欄と同名の.png画像ファイルを  
 imgフォルダに保存すると画像が表示される  
   
 existが1である場合にのみ計算対象となる。  
