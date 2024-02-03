@@ -210,7 +210,6 @@ def Create_columns_reroll(combined_df, drawn_cards):
     st.markdown(f"***全体の残り枚数:{total_cards}***")
     st.write(combined_df)
 
-
 ####各種定義終了####
 
 
@@ -230,7 +229,7 @@ combined_df = Create_df_from_selected()
 
 #リストに表示する用に一時的なデータ'combined_info'を作成
 combined_df['combined_info'] = combined_df.apply(lambda row: f"{row['grade']} - {row['type1']} - {row['name']}", axis=1)
-# 引きたいカードを選択する
+# 引きたいカードの選択欄
 col1, col2 = st.columns(2)
 selected_card1_info = col1.selectbox('引きたいカード1', combined_df['combined_info'].unique())
 owned_cards1 = col2.slider('引きたいカード1、酒場から除外する数', min_value=0, max_value=16, value=2)
