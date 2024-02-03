@@ -5,7 +5,9 @@ https://bgrerollsim.streamlit.app/
 ローカルで使う場合はこのリポジトリをgit cloneして  
 requirements.txtからstreamlitとpandasをインストールして   
 コマンドラインから  
-~~~streamllit run BGCalc_st7.py~~~
+~~~実行コマンド
+streamllit run BGCalc_st7.py
+~~~
 を実行するだけ  
   
 data_jis.csvを編集すれば新しい環境でも対応可能  
