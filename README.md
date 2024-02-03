@@ -1,5 +1,5 @@
 streamlitでデプロイする用  
-https://bgrerollsim.streamlit.app/  
+https://bg-sim.streamlit.app/  
   
   
 ローカルで使う場合はこのリポジトリをgit cloneして  
