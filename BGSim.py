@@ -2,8 +2,12 @@ import streamlit as st
 import pandas as pd
 
 # CSVファイルの読み込み
-df = pd.read_csv('data_jis.csv', encoding='shift-jis')
-df = df[df['exist'] == 1]
+@st.cache
+def read_csv():
+    df = pd.read_csv('data_jis.csv', encoding='shift-jis')
+    df = df[df['exist'] == 1]
+    return df
+df = read_csv()
 
 # Streamlitアプリのタイトル
 st.title('BGリロールシミュレータ')
