@@ -1,4 +1,4 @@
-streamlitでデプロイする用  
+streamlit Community Cloudでデプロイする用  
 https://bg-sim.streamlit.app/  
   
   
