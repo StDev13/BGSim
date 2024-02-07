@@ -6,7 +6,7 @@ https://bg-sim.streamlit.app/
 requirements.txtからstreamlitとpandasをインストールして   
 コマンドラインから  
 ~~~実行コマンド
-streamllit run BGSim.py
+streamllit run BGSim_localcsv.py
 ~~~
 を実行するだけ  
   
