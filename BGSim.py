@@ -1,13 +1,17 @@
 import streamlit as st
 import pandas as pd
+from streamlit_gsheets import GSheetsConnection
 
-# CSVファイルの読み込み
+# 非公開Googleスプレッドシートからデータを読み込む
 @st.cache_data
-def read_csv():
-    df = pd.read_csv('data_jis.csv', encoding='shift-jis')
+def read_google_sheet():
+    conn = st.connection("gsheets", type=GSheetsConnection)
+
+    df = conn.read()
     df = df[df['exist'] == 1]
     return df
-df = read_csv()
+
+df = read_google_sheet()
 
 # Streamlitアプリのタイトル
 st.title('BGリロールシミュレータ')
