@@ -3,11 +3,10 @@ import pandas as pd
 from streamlit_gsheets import GSheetsConnection
 
 # 非公開Googleスプレッドシートからデータを読み込む
-@st.cache_data
 def read_google_sheet():
     conn = st.connection("gsheets", type=GSheetsConnection)
 
-    df = conn.read()
+    df = conn.read(ttl="2m")
     df = df[df['exist'] == 1]
     return df
 
