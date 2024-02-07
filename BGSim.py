@@ -14,7 +14,7 @@ def read_google_sheet():
 df = read_google_sheet()
 
 # Streamlitアプリのタイトル
-st.title('BGリロールシミュレータ')
+st.title('BGRerollシミュレータ')
 
 #各種session_stateを初期化。streamlitの制約上、こういう初期化方法が必要
 default_session_state_values = {
