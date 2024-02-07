@@ -1,9 +1,10 @@
+.gitignore
+.cursorignore
 old/
 BGSim/
 scrape.py
 GetImgFromUrl.py
 cardlist.txt
 BGSim_old.py
-.cursorignore
 追加予定機能.txt
 .streamlit/
